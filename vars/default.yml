@@ -1,0 +1,30 @@
+---
+admin_user: ubuntu
+shared_config_path: /home/vagrant/shared_vagrant
+docker_required_packages:
+  - "apt-transport-https"
+  - "ca-certificates"
+  - "curl"
+  - "gnupg-agent"
+  - "software-properties-common"
+  - "python3-pip"
+  - "python3-setuptools"
+  # - "python-dev"
+common_required_packages:
+  - "gpg"
+  - "jq"
+  - "unzip"
+  - "wget"
+  - "git"
+build_cicd_tool_packages:
+  - "terraform"
+  - "nodejs"
+docker_gpg_url: https://download.docker.com/linux/ubuntu/gpg
+docker_apt_repo: deb https://download.docker.com/linux/ubuntu jammy stable
+docker_packages:
+  - "docker-ce"
+  - "docker-ce-cli"
+  - "containerd.io"
+docker_compose_url: https://github.com/docker/compose/releases/download/1.28.2/docker-compose-Linux-x86_64
+nodejs_gpg_url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+nodejs_apt_repo: deb https://deb.nodesource.com/node_18.x jammy main
