@@ -6,6 +6,7 @@ Tools included in this build:
 - Docker - Docker Compose
 
 Revise line 36 in ***Vagrantfile*** accordingly to your local environment.
+
 Revise following configuration in ***playbook.yml*** accordingly to your need:
 - SSH key importing: task 13
 - AWS credential configuration: task 14
