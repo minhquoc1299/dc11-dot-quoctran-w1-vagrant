@@ -3,7 +3,7 @@ This build uses Vagrant box [ubuntu/jammy64](https://app.vagrantup.com/ubuntu/bo
 
 ## Prerequisite software on your host machine:
 - [Vagrant](https://www.vagrantup.com/)
-- [Oracle VM VirtualBox ]([https://www.vagrantup.com/](https://www.virtualbox.org/)) 
+- [Oracle VM VirtualBox](https://www.virtualbox.org/) 
 
 ## Tools included in this build
 - Terraform
