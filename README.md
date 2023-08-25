@@ -1,7 +1,7 @@
 # ph2-vagrant Ubuntu 22.04 (Jammy)
 This build uses Vagrant box [ubuntu/jammy64](https://app.vagrantup.com/ubuntu/boxes/jammy64)
 
-## Prerequisite software on your host machine:
+## Prerequisite software on your host machine
 - [Vagrant](https://www.vagrantup.com/)
 - [Oracle VM VirtualBox](https://www.virtualbox.org/) 
 
