@@ -8,12 +8,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_download_insecure = true
 
   # port forwarding
-#   config.vm.network "forwarded_port", guest: 443, host: 443
-#   config.vm.network "forwarded_port", guest: 3000, host: 3000
-#   config.vm.network "forwarded_port", guest: 3100, host: 3100
-#   config.vm.network "forwarded_port", guest: 9090, host: 9090
-#   config.vm.network "forwarded_port", guest: 9093, host: 9093
-#   config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 22, host: 2222
 
   config.vm.provider "virtualbox" do |v|
     v.memory = 2048
@@ -22,9 +17,6 @@ Vagrant.configure("2") do |config|
     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
 
-  # port forwarding
-  # config.vm.network "forwarded_port", guest: 22, host: 2200
- 
   config.vm.box_check_update = false
   config.ssh.insert_key = false
   config.vm.provision:shell, inline: <<-SHELL
