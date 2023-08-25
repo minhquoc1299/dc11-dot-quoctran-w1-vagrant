@@ -105,7 +105,6 @@
     with_items:
       - id_rsa
       - id_ed25519
-      - ph2-stg-daniel-key-created-by-aws
 
   - name: 13.2. Copy ssh pub key 
     copy:
@@ -151,17 +150,6 @@
       echo "alias commit='source ~/shared_vagrant/scripts/commit.sh'" >> /home/vagrant/.bashrc
       echo "alias ph2='source ~/shared_vagrant/scripts/ph2-environment-manager.sh'" >> /home/vagrant/.bashrc   
       echo "alias s1='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-0c88681db12d4202d'" >> /home/vagrant/.bashrc
-      echo "alias s2='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-020e909b4cf428662'" >> /home/vagrant/.bashrc
-      echo "alias s3='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-061b92720ec6fc9ec'" >> /home/vagrant/.bashrc
-      echo "alias s4='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-0f1648eac972b53ef'" >> /home/vagrant/.bashrc
-      echo "alias s5='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-00359cfc2c9fbb9a8'" >> /home/vagrant/.bashrc
-      echo "alias s6='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-0358b691770160c7c'" >> /home/vagrant/.bashrc
-      echo "alias s7='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-0ed0195c213300512'" >> /home/vagrant/.bashrc
-      echo "alias s8='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-0062dd0dd17832774'" >> /home/vagrant/.bashrc
-      echo "alias s9='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-0135eff1f043ad904'" >> /home/vagrant/.bashrc
-      echo "alias s5es='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-0994a00f9fb0b07fa'" >> /home/vagrant/.bashrc
-      echo "alias s9es='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-03462840816cae1e0'" >> /home/vagrant/.bashrc
-      echo "alias ansible='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-0b296eb3a2fdf6397'" >> /home/vagrant/.bashrc
 
   - name: 17. Create project dir
     ansible.builtin.file:
