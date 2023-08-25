@@ -1,5 +1,5 @@
 # ph2-vagrant Ubuntu 22.04 (Jammy)
-This build uses vagrant box [ubuntu/jammy64](https://app.vagrantup.com/ubuntu/boxes/jammy64)
+This build uses Vagrant box [ubuntu/jammy64](https://app.vagrantup.com/ubuntu/boxes/jammy64)
 
 ## Prerequisite software on your host machine:
 - [Vagrant](https://www.vagrantup.com/)
@@ -11,7 +11,7 @@ This build uses vagrant box [ubuntu/jammy64](https://app.vagrantup.com/ubuntu/bo
 - Docker - Docker Compose
 
 ## How to use
-# In ***playbook.yml***
+### In ***playbook.yml***
 - Task 13: importing SSH key
   - Mandatory since we'll be using those credential to SSH into our box.
   - Make sure to place your SSH key pair into shared folder, or task 13 will fail.
@@ -19,9 +19,9 @@ This build uses vagrant box [ubuntu/jammy64](https://app.vagrantup.com/ubuntu/bo
 - Task 14 is optional, if you do not have/do not need to set up AWS credential, simply comment it out.
 - Task 16 is optional, comment it out if you do not need to set up bashrc in prior.
 
-# In ***Vagrantfile***
-Line 26 specify port-forwarding value for SSH connection from your host machine, revise if you already used port 2222
-Line 36 mount your folder of choice into Vagrant box, it is used to import your SSH key, and to act as a shared folder in case you want to move stuff between your host and VM box
+### In ***Vagrantfile***
+- Line 26 specify port-forwarding value for SSH connection from your host machine, revise if you already used port 2222
+- Line 36 mount your folder of choice into Vagrant box, it is used to import your SSH key, and to act as a shared folder in case you want to move stuff between your host and VM box
 
 ## Build your VM
 Open CMD in your working directory and run
