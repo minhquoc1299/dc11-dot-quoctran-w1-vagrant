@@ -35,14 +35,14 @@ vagrant up --provision
 After Vagrant finish provisioning your box, it'll create a VM in your Oracle VM VirtualBox.
 
 ## Connecting to your Vagrant
-SSH config as follow
+> SSH config as follow
 ```
 Hostname/IP: 127.0.0.1/localhost
 User: vagrant
 Port: 2222
 ```
 
-If you are working with Visual Code Studio, install following extension to enable SSH and remote browsing:
+If you are working with Visual Code Studio, install following extension to enable SSH and remote browsing
 - [Remote - SSH](https://code.visualstudio.com/blogs/2019/10/03/remote-ssh-tips-and-tricks)
 - Remote Explorer
 
