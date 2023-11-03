@@ -137,19 +137,18 @@
     with_items:
       - config
       - credentials
-      - persistent_credentials
 
   - name: 15. Update authorized_key
     shell: |
       cat /home/vagrant/.ssh/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
       cat /home/vagrant/.ssh/id_ed25519.pub >> /home/vagrant/.ssh/authorized_keys
 
-  - name: 16. Create bashrc alias
-    shell: |
-      echo "source ~/shared_vagrant/scripts/ph2-environment-manager.sh au staging" >> /home/vagrant/.bashrc
-      echo "alias commit='source ~/shared_vagrant/scripts/commit.sh'" >> /home/vagrant/.bashrc
-      echo "alias ph2='source ~/shared_vagrant/scripts/ph2-environment-manager.sh'" >> /home/vagrant/.bashrc   
-      echo "alias s1='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-0c88681db12d4202d'" >> /home/vagrant/.bashrc
+  # - name: 16. Create bashrc alias
+  #   shell: |
+  #     echo "source ~/shared_vagrant/scripts/ph2-environment-manager.sh au staging" >> /home/vagrant/.bashrc
+  #     echo "alias commit='source ~/shared_vagrant/scripts/commit.sh'" >> /home/vagrant/.bashrc
+  #     echo "alias ph2='source ~/shared_vagrant/scripts/ph2-environment-manager.sh'" >> /home/vagrant/.bashrc   
+  #     echo "alias s1='export AWS_PROFILE=ph2-stg && aws ssm start-session --region ap-southeast-2 --output table --target i-0c88681db12d4202d'" >> /home/vagrant/.bashrc
 
   - name: 17. Create project dir
     ansible.builtin.file:
@@ -158,3 +157,117 @@
       owner: vagrant
       group: vagrant
       mode: '0775'
+
+  - name: 18. Install Apache
+    shell: |
+      # Install
+        if ! command -v apache2 &> /dev/null; then
+          sudo apt update
+          sudo apt-get install -y apache2
+        fi
+
+      # Allow firewall 
+      sudo ufw app list
+      sudo ufw allow 'Apache'
+
+  - name: 19. Create folder domain apache2
+    ansible.builtin.file:
+      path: /var/www/{{ your_domain }}
+      state: directory
+      owner: vagrant
+      group: vagrant
+      mode: '0755'
+
+  - name: 20. Config VirtualHost
+    shell: |
+      # Create file test
+      echo "<html>
+        <head>
+            <title>Welcome to {{ your_domain }}!</title>
+        </head>
+        <body>
+            <h1>Success! The {{ your_domain }} virtual host is working!</h1>
+        </body>
+      </html>" | sudo tee /var/www/{{ your_domain }}/index.html > /dev/null
+
+      # Config test
+      echo "<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        ServerName {{ your_domain }}
+        ServerAlias www.{{ your_domain }}
+        DocumentRoot /var/www/{{ your_domain }}
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+      </VirtualHost>" | sudo tee /etc/apache2/sites-available/{{ your_domain }}.conf > /dev/null
+
+      # Enable your_domain
+      sudo a2ensite {{ your_domain }}.conf
+      sudo a2dissite 000-default.conf
+      sudo apache2ctl configtest
+
+      # Restart apache 2
+      sudo systemctl restart apache2
+
+  - name: 21. Add domain to /etc/hosts
+    shell: |
+      echo "127.0.0.1 {{your_domain}}" | sudo tee --append /etc/hosts > /dev/null
+
+  - name: 22. Install & config logrotate
+    shell: |
+      # Install
+      if ! command -v logrotate &> /dev/null; then
+        sudo apt update
+        sudo apt-get install -y logrotate
+      fi
+
+      # Configure
+      echo "/var/log/apache2/*.log {
+            daily
+            missingok
+            rotate 14
+            compress
+            notifempty
+            create 0640 www-data www-data
+            sharedscripts
+            postrotate
+              systemctl reload apache2
+            endscript
+          }" | sudo tee /etc/logrotate.d/apache2 > /dev/null
+
+      sudo chmod 755 /var/log/apache2
+      sudo chmod 755 /var/log/apache2/*.log
+
+  - name: 23. Create bucket s3
+    shell: |
+      bucket_name=dc11-quoctran-devopstraining-apache2log
+      exists=$(aws s3 ls | awk '{print $NF}' | grep -w 'dc11-quoctran-devopstraining-apache2log' && echo "Found Bucket" || true)
+      if [ -z "$exists" ]; then
+        region=$(aws configure get region --profile default)
+        aws s3api create-bucket --bucket "${bucket_name}" --create-bucket-configuration LocationConstraint="${region}"
+      fi
+    become: yes
+    become_user: vagrant
+
+  - name: 24. Create crontab push log to s3
+    shell: |
+      # Write and save script to file log-apache2.sh
+      echo "if [ \$(ls /var/log/apache2/*.log | wc -l) -gt 5 ]; then
+              aws s3 cp /var/log/apache2/\$(ls -t /var/log/apache2/*.log | tail -1 | xargs -n 1 basename) s3://dc11-quoctran-devopstraining-apache2log/;
+            fi" | sudo tee /usr/local/bin/log-apache2.sh
+      
+      chmod 755 /usr/local/bin/log-apache2.sh
+
+      # Add to crontab
+      exists=$(crontab -l | grep -q '*/10 .* .* .* .*  bash /usr/local/bin/log-apache2.sh' && echo "Found Crontab" || true)
+      if [ -z "$exists" ]; then
+          (crontab -l ; echo "*/10 * * * *  bash /usr/local/bin/log-apache2.sh ") | crontab -
+      fi
+    become: yes
+    become_user: vagrant
+    
+
+
+
+
+      
+

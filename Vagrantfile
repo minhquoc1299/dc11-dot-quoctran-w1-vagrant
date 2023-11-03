@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider "virtualbox" do |v|
     v.memory = 2048
-    v.cpus = 2
+    v.cpus = 3
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
   SHELL
   config.vm.define "ph2-jammy"
   config.vm.hostname = "ph2-jammy"
-  config.vm.synced_folder "C:/Data/shared_vagrant", "/home/vagrant/shared_vagrant"
+  config.vm.synced_folder "D:/TMA/DevOps/shared_vagrant", "/home/vagrant/shared_vagrant"
   
   config.vm.provision "shell", inline: <<-SHELL
     ## apt update

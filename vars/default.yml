@@ -28,3 +28,4 @@ docker_packages:
 docker_compose_url: https://github.com/docker/compose/releases/download/1.28.2/docker-compose-Linux-x86_64
 nodejs_gpg_url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
 nodejs_apt_repo: deb https://deb.nodesource.com/node_18.x jammy main
+your_domain: helloworld.com
